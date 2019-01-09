@@ -8,7 +8,6 @@ Created on Wed Jan  2 18:41:33 2019
 # Get Python 3 functionality:
 from __future__ import\
     absolute_import, print_function, division, unicode_literals
-from future.utils import raise_with_traceback, raise_from
 # catch exception with: except Exception as e
 from builtins import range, map, zip, filter
 from io import open
@@ -72,15 +71,17 @@ class UCIData(matData):
     
     
 
-#a = UCIData('./uci data set/Abalone.mat')
-#a0,a1,a2 = a.createPartialData()
-#c = CrossData(a0)
-#c.cross_split()
-#l = []
-#for i in range(40):
-#    ind = c.next_batch(100,0)
-#    print(type(ind),len(ind))
-#    l.append(ind)
+if __name__=="__main__":
+    a = UCIData('./uci data set/Abalone.mat')
+    a0,a1,a2 = a.createPartialData()
+    c = CrossData(a0)
+    c.cross_split()
+#    c = NextBatchData(a0)
+    l = []
+    for i in range(40):
+        ind = c.next_batch(100,0)
+        print(type(ind),len(ind))
+        l.append(ind)
 
 
 
