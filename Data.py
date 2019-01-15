@@ -9,9 +9,7 @@ Created on Wed Jan  2 18:41:33 2019
 from __future__ import\
     absolute_import, print_function, division, unicode_literals
 # catch exception with: except Exception as e
-from builtins import range, map, zip, filter
-from io import open
-import six
+#from builtins import range
 # End: Python 2/3 compatability header small
 import numpy as np
 from MyDataDealer import matData,CrossData
