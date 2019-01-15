@@ -1,0 +1,33 @@
+Network_loss4_1
+loss_func2  一层   train_epoch:6000  lr=0.001  单次运行 0.23
+loss_func2  一层   train_epoch:5000  lr=0.001  单次运行 0.22
+loss_func2  一层   train_epoch:7000  lr=0.001  单次运行 0.214
+loss_func2  一层   train_epoch:5000  lr=0.01  单次运行 0.23
+loss_func2  一层   train_epoch:6000  lr=0.01  单次运行 0.23
+loss_func2  一层   train_epoch:7000  lr=0.01  单次运行 0.21
+
+Network_loss4_2
+loss_func2  两层   train_epoch:5000  lr=0.001  单次运行 0.22
+loss_func2  两层   train_epoch:6000  lr=0.001  单次运行 0.21
+loss_func2  两层   train_epoch:7000  lr=0.001  单次运行 0.23
+loss_func2  两层   train_epoch:5000  lr=0.01  单次运行 0.22   ///0.26
+loss_func2  两层   train_epoch:6000  lr=0.01  单次运行 0.19  0.22  0.22
+loss_func2  两层   train_epoch:7000  lr=0.01  单次运行 0.22  0.24  0.22
+
+
+Network_loss4_3
+loss_func2  三层   train_epoch:5000  lr=0.001  单次运行 0.18  0.20  0.22
+loss_func2  三层   train_epoch:6000  lr=0.001  单次运行 0.20  0.21  0.18  0.22
+loss_func2  三层   train_epoch:7000  lr=0.001  单次运行 0.20  0.21  0.22
+loss_func2  三层   train_epoch:5000  lr=0.01  单次运行 0.22  0.24  0.21
+loss_func2  三层   train_epoch:6000  lr=0.01  单次运行 0.21  0.23  0.19
+loss_func2  三层   train_epoch:7000  lr=0.01  单次运行 0.21  0.24  0.21
+
+
+Network_loss1_1
+  一层   train_epoch:6000  lr=0.001  单次运行 0.22  0.22  0.24
+  一层   train_epoch:5000  lr=0.001  单次运行 0.22  0.25  0.24
+  一层   train_epoch:7000  lr=0.001  单次运行 0.23  0.24
+  一层   train_epoch:5000  lr=0.01  单次运行 0.23
+  一层   train_epoch:6000  lr=0.01  单次运行 0.23
+  一层   train_epoch:7000  lr=0.01  单次运行 0.21

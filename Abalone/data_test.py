@@ -31,6 +31,8 @@ parser.add_argument("--batch_size", type=int, default=100, help="number of image
 parser.add_argument("--use_gpu", default=True, help="Whether to use GPU")
 parser.add_argument("--nb_item",default=0,choices=[0,1,2,3,4], help="crosssplit data ,it select which group to use")
 parser.add_argument("--reload_data", default=True, help="Whether to reload data")
+parser.add_argument("-cpdr","--create_partial_data_rate", type=float,default=0.5, help="how much date transpose to partial data ,the value is (0,1)")
+parser.add_argument("-npt","--nb_partial_target", type=int, default=1, choices=[1,2,3], help="number of partial target without count the true target")
 parse = parser.parse_args()
 
 if parse.use_gpu:
@@ -50,12 +52,13 @@ else:
 #    print(type(ind),len(ind))
 #    l.append(ind)
 
-createVar = globals()
-for i in range(5):
-    createVar["g"+str(i)] = tf.Graph()
-    print(type(createVar["g"+str(i)]))
+#createVar = globals()
+#for i in range(5):
+#    createVar["g"+str(i)] = tf.Graph()
+#    print(type(createVar["g"+str(i)]))
 #    with exec("g{}.as_default()".format(i)):
 #        with tf.variable_scope("Graph{}".format(i)):
 #            createVar["xs_g"+str(i)] = tf.placeholder(tf.float32, [None, 7])
 #            createVar["ys_g"+str(i)] = tf.placeholder(tf.float32, [None, 29])
 
+print(parse.nb_partial_target)

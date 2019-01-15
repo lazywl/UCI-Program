@@ -28,15 +28,19 @@ parser.add_argument("--model_save_name",type=str,default="Abalone.ckpt",help="th
 parser.add_argument("--model_save_dir",type=str,default=None,help="the dir for model to save")
 parser.add_argument("--lr", type=float, default=0.001, help="initial learning rate for adam")
 parser.add_argument("--batch_size", type=int, default=100, help="number of images in batch")
-parser.add_argument("--use_gpu", default=True, help="Whether to use GPU")
-#parser.add_argument("--nb_item", type=int, required=True, choices=[0,1,2,3,4], help="crosssplit data ,it select which group to use")
-parser.add_argument("--reload_data", default=False, help="Whether to reload data")
+#parser.add_argument("--use_gpu", default=True, help="Whether to use GPU")
+#parser.add_argument("--use_gpu_nb", default=1, type=int, choices=[0,1], help="the number of GPU to use")
+parser.add_argument("-npt","--nb_partial_target", type=int, default=1, choices=[1,2,3], help="number of partial target without count the true target")
+parser.add_argument("-cpdr","--create_partial_data_rate", type=float,default=0.5, help="how much date transpose to partial data ,the value is (0,1)")
 parse = parser.parse_args()
 
-if parse.use_gpu:
-    os.environ["CUDA_VISIBLE_DEVICES"] = "1"
-else:
-    os.environ["CUDA_VISIBLE_DEVICES"] = ""
+#if parse.use_gpu:
+#    os.environ["CUDA_VISIBLE_DEVICES"] = str(parse.use_gpu_nb)
+#else:
+#    os.environ["CUDA_VISIBLE_DEVICES"] = ""
+
+if parse.create_partial_data_rate < 0 or parse.create_partial_data_rate > 1:
+    raise ValueError("parameter create_partial_data_rate must be range from 0 to 1")
     
 createVar = globals()
 
@@ -113,7 +117,8 @@ def getGraph(cv=5):
     return output_array,cross_entropy_array,train_step_array,Graph_array,xs_array,ys_array
 
 Abalone_data = AbaloneData.UCIData(parse.DataDir)
-X,Y,partial_Y = Abalone_data.createPartialData()
+X,Y,partial_Y = Abalone_data.createPartialData(rate=parse.create_partial_data_rate,nb_partial_target=parse.nb_partial_target)
+X = Data.guiYiHua(X)
 item_data = CrossData(X)
 item_data.cross_split()
 
