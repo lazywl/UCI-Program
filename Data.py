@@ -70,7 +70,7 @@ class UCIData(matData):
     
 
 if __name__=="__main__":
-    a = UCIData('./uci data set/Abalone.mat')
+    a = UCIData('./uci_data_set/Abalone.mat')
     a0,a1,a2 = a.createPartialData()
     c = CrossData(a0)
     c.cross_split()

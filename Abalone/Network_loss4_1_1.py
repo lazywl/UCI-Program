@@ -22,7 +22,7 @@ AbaloneData = imp.load_source('Abalone','../Data.py')
 
 
 parser = argparse.ArgumentParser(description="show some parse for the progess")
-parser.add_argument("--DataDir",type=str,default="../uci data set/Abalone.mat",help="the mat data file path")
+parser.add_argument("--DataDir",type=str,default="../uci_data_set/Abalone.mat",help="the mat data file path")
 parser.add_argument("--train_epoch",type=int,default=5000,help="number of training epochs")
 parser.add_argument("--model_save_name",type=str,default="Abalone.ckpt",help="the file name for model to save")
 parser.add_argument("--model_save_dir",type=str,default=None,help="the dir for model to save")

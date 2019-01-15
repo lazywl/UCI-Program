@@ -1,0 +1,15 @@
+Ecoli
+Leaf
+Movement
+Vehicle
+CTG
+Segment
+
+
+Abalone   None*7   None*29
+CTG      2126*21   2126*10
+Segment  2310*19   2310*7
+Movement   360*90    360*15
+Ecoli     336*7     336*8
+Vehicle   846*18    846*4
+Leaf      340*14    340*30
