@@ -15,7 +15,7 @@ import argparse
 import imp
 from MyDataDealer import CrossData,Data
 
-CTGData = imp.load_source('Abalone','../Data.py')
+CTGData = imp.load_source('CTG','../Data.py')
 
 
 
