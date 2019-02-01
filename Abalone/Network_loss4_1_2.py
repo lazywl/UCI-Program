@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jan  9 11:01:35 2019
+Created on Sun Jan 20 09:06:10 2019
 
 @author: Administrator
 """
@@ -120,31 +120,31 @@ Abalone_data = AbaloneData.UCIData(parse.DataDir)
 X,Y,partial_Y = Abalone_data.createPartialData(rate=parse.create_partial_data_rate,nb_partial_target=parse.nb_partial_target)
 X = Data.guiYiHua(X)
 
-item_data = CrossData(X)
-item_data.cross_split()
+Accu_array = []
+for N in range(10):
 
-output_array,cross_entropy_array,train_step_array,Graph_array,xs_array,ys_array = getGraph()
-correct_pred = []
-for j in range(5):
-#    createVar["sess"+str(j)] = tf.Session(graph=Graph_array[j])
-    with tf.Session(graph=Graph_array[j]) as sess:
-        sess.run(tf.global_variables_initializer())
-        for k in range(parse.train_epoch):
-            batch_index= item_data.next_batch(parse.batch_size,j)
-            batch_xs, batch_ys, batch_ys_ = X[batch_index],Y[batch_index],partial_Y[batch_index]
-            sess.run(train_step_array[j], feed_dict={xs_array[j]: batch_xs, ys_array[j]: batch_ys_})
-            if k % 50 == 0:
-                print("training {}:".format(j),k/50)
-                print("train:",compute_accuracy(xs_array[j],ys_array[j],batch_xs,batch_ys,output_array[j],sess))
-                print("test:",compute_accuracy(xs_array[j],ys_array[j],
-                    X[item_data.data_test[0]], Y[item_data.data_test[0]], output_array[j],sess))
-                print("loss:",sess.run(cross_entropy_array[j],feed_dict={xs_array[j]:batch_xs, ys_array[j]:batch_ys_}))
-        corr_num = compute_correct_number(xs_array[j],ys_array[j],X[item_data.data_test[0]], Y[item_data.data_test[0]], output_array[j],sess)
-        correct_pred.append(corr_num)
-        item_data.set_index_to_zero()
-Accu = sum(correct_pred)/item_data._num_examples
-print(Accu)
-
+    item_data = CrossData(X)
+    item_data.cross_split()
     
-    
-    
+    output_array,cross_entropy_array,train_step_array,Graph_array,xs_array,ys_array = getGraph()
+    correct_pred = []
+    for j in range(5):
+    #    createVar["sess"+str(j)] = tf.Session(graph=Graph_array[j])
+        with tf.Session(graph=Graph_array[j]) as sess:
+            sess.run(tf.global_variables_initializer())
+            for k in range(parse.train_epoch):
+                batch_index= item_data.next_batch(parse.batch_size,j)
+                batch_xs, batch_ys, batch_ys_ = X[batch_index],Y[batch_index],partial_Y[batch_index]
+                sess.run(train_step_array[j], feed_dict={xs_array[j]: batch_xs, ys_array[j]: batch_ys_})
+                if k % 50 == 0:
+                    print("training {}/{}:".format(N,j),k/50)
+                    print("train:",compute_accuracy(xs_array[j],ys_array[j],batch_xs,batch_ys,output_array[j],sess))
+                    print("test:",compute_accuracy(xs_array[j],ys_array[j],
+                        X[item_data.data_test[0]], Y[item_data.data_test[0]], output_array[j],sess))
+                    print("loss:",sess.run(cross_entropy_array[j],feed_dict={xs_array[j]:batch_xs, ys_array[j]:batch_ys_}))
+            corr_num = compute_correct_number(xs_array[j],ys_array[j],X[item_data.data_test[0]], Y[item_data.data_test[0]], output_array[j],sess)
+            correct_pred.append(corr_num)
+            item_data.set_index_to_zero()
+    Accu = sum(correct_pred)/item_data._num_examples
+    Accu_array.append(Accu)
+print(Accu_array)

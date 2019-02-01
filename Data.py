@@ -12,6 +12,7 @@ from __future__ import\
 #from builtins import range
 # End: Python 2/3 compatability header small
 import numpy as np
+import os
 from MyDataDealer import matData,CrossData
 
 class UCIData(matData):
@@ -67,7 +68,29 @@ class UCIData(matData):
         
         return (self.data,self.target,self.partial_target)
     
-    
+    #记录实验结果
+    @staticmethod
+    def save2txt(parse,result,saveName):
+        '''
+        记录实验结果
+        '''
+        string = u"train_epoch:{}   lr:{}  一层   npt:{}  cpdr:{}".format(parse.train_epoch,parse.lr,parse.nb_partial_target,parse.create_partial_data_rate)
+        if type(string) != str:
+            string = string.encode()
+        accu = ""
+        for r in result:
+            accu += str(r)[:5] + "  "
+        try:
+            f = open(saveName,'a')
+            f.write(string)
+            f.write(os.linesep)
+            f.write(accu)
+            f.write(os.linesep)
+            f.write(os.linesep)
+        except Exception as e:
+            pass
+        finally:
+            f.close()
 
 if __name__=="__main__":
     a = UCIData('./uci_data_set/Abalone.mat')

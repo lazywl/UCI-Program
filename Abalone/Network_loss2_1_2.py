@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jan  9 11:01:35 2019
+Created on Tue Jan 22 13:56:28 2019
 
 @author: Administrator
 """
@@ -105,8 +105,8 @@ def getGraph(cv=5):
                 createVar["ys_g"+str(i)] = tf.placeholder(tf.float32, [None, 29],name='target')
                 createVar["weight_g"+str(i)] = weight_variable([7,29],tf.truncated_normal,0.1,'w0')
                 createVar["bais_g"+str(i)] = bias_variable([29],'b0')
-                createVar["output_g"+str(i)] = tf.matmul(createVar["xs_g"+str(i)],createVar["weight_g"+str(i)]) + createVar["bais_g"+str(i)]
-                createVar["cross_entropy_g"+str(i)] = loss_func2(createVar["ys_g"+str(i)],createVar["output_g"+str(i)])
+                createVar["output_g"+str(i)] = tf.nn.softmax(tf.matmul(createVar["xs_g"+str(i)],createVar["weight_g"+str(i)]) + createVar["bais_g"+str(i)])
+                createVar["cross_entropy_g"+str(i)] = -tf.reduce_mean(tf.log(tf.reduce_sum(createVar["ys_g"+str(i)]*tf.clip_by_value(createVar["output_g"+str(i)],0.001,1),reduction_indices=[1])))
                 createVar["train_step_g"+str(i)] = tf.train.AdamOptimizer(parse.lr).minimize(createVar["cross_entropy_g"+str(i)])
                 output_array.append(createVar["output_g"+str(i)])
                 cross_entropy_array.append(createVar["cross_entropy_g"+str(i)])
@@ -120,31 +120,48 @@ Abalone_data = AbaloneData.UCIData(parse.DataDir)
 X,Y,partial_Y = Abalone_data.createPartialData(rate=parse.create_partial_data_rate,nb_partial_target=parse.nb_partial_target)
 X = Data.guiYiHua(X)
 
-item_data = CrossData(X)
-item_data.cross_split()
 
-output_array,cross_entropy_array,train_step_array,Graph_array,xs_array,ys_array = getGraph()
-correct_pred = []
-for j in range(5):
-#    createVar["sess"+str(j)] = tf.Session(graph=Graph_array[j])
-    with tf.Session(graph=Graph_array[j]) as sess:
-        sess.run(tf.global_variables_initializer())
-        for k in range(parse.train_epoch):
-            batch_index= item_data.next_batch(parse.batch_size,j)
-            batch_xs, batch_ys, batch_ys_ = X[batch_index],Y[batch_index],partial_Y[batch_index]
-            sess.run(train_step_array[j], feed_dict={xs_array[j]: batch_xs, ys_array[j]: batch_ys_})
-            if k % 50 == 0:
-                print("training {}:".format(j),k/50)
-                print("train:",compute_accuracy(xs_array[j],ys_array[j],batch_xs,batch_ys,output_array[j],sess))
-                print("test:",compute_accuracy(xs_array[j],ys_array[j],
-                    X[item_data.data_test[0]], Y[item_data.data_test[0]], output_array[j],sess))
-                print("loss:",sess.run(cross_entropy_array[j],feed_dict={xs_array[j]:batch_xs, ys_array[j]:batch_ys_}))
-        corr_num = compute_correct_number(xs_array[j],ys_array[j],X[item_data.data_test[0]], Y[item_data.data_test[0]], output_array[j],sess)
-        correct_pred.append(corr_num)
-        item_data.set_index_to_zero()
-Accu = sum(correct_pred)/item_data._num_examples
-print(Accu)
+Accu_array = []
 
+for N in range(10):
+
+
+    item_data = CrossData(X)
+    item_data.cross_split()
     
+    output_array,cross_entropy_array,train_step_array,Graph_array,xs_array,ys_array = getGraph()
     
+    correct_pred = []
     
+    for j in range(5):
+    #    createVar["sess"+str(j)] = tf.Session(graph=Graph_array[j])
+        with tf.Session(graph=Graph_array[j]) as sess:
+            sess.run(tf.global_variables_initializer())
+            for k in range(parse.train_epoch):
+                batch_index= item_data.next_batch(parse.batch_size,j)
+                batch_xs, batch_ys, batch_ys_ = X[batch_index],Y[batch_index],partial_Y[batch_index]
+                batch_ys_ = Data.deal_data(batch_ys_)
+                sess.run(train_step_array[j], feed_dict={xs_array[j]: batch_xs, ys_array[j]: batch_ys_})
+                if k % 50 == 0:
+                    print("training {}/{}:".format(N,j),k/50)
+                    print("train:",compute_accuracy(xs_array[j],ys_array[j],batch_xs,batch_ys,output_array[j],sess))
+                    print("test:",compute_accuracy(xs_array[j],ys_array[j],
+                        X[item_data.data_test[0]], Y[item_data.data_test[0]], output_array[j],sess))
+                    print("loss:",sess.run(cross_entropy_array[j],feed_dict={xs_array[j]:batch_xs, ys_array[j]:batch_ys_}))
+            corr_num = compute_correct_number(xs_array[j],ys_array[j],X[item_data.data_test[0]], Y[item_data.data_test[0]], output_array[j],sess)
+            correct_pred.append(corr_num)
+            item_data.set_index_to_zero()
+    Accu = sum(correct_pred)/item_data._num_examples
+    Accu_array.append(Accu)
+print(Accu_array)
+#AbaloneData.UCIData.save2txt(parse,Accu_array,'Network_loss2_1_2.txt')
+
+
+
+
+
+
+
+
+
+

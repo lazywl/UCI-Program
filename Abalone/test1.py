@@ -146,6 +146,10 @@ def getGraph(cv=5):
 
 
 a,b,c,d= getGraph()
+a1,b1,c1,d1= getGraph()
+a2,b2,c2,d2= getGraph()
+a3,b3,c3,d3= getGraph()
+a4,b4,c4,d4= getGraph()
 
 
 ## -*- coding: utf-8 -*-

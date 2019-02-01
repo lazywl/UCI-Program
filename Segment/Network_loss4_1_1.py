@@ -97,7 +97,7 @@ def getGraph(cv=5):
                 createVar["ys_g"+str(i)] = tf.placeholder(tf.float32, [None, 7],name='target')
                 createVar["weight_g"+str(i)] = weight_variable([19,7],tf.truncated_normal,0.1,'w0')
                 createVar["bais_g"+str(i)] = bias_variable([7],'b0')
-                createVar["output_g"+str(i)] = tf.nn.softmax(tf.matmul(createVar["xs_g"+str(i)],createVar["weight_g"+str(i)]) + createVar["bais_g"+str(i)])
+                createVar["output_g"+str(i)] = tf.matmul(createVar["xs_g"+str(i)],createVar["weight_g"+str(i)]) + createVar["bais_g"+str(i)]
                 createVar["cross_entropy_g"+str(i)] = loss_func2(createVar["ys_g"+str(i)],createVar["output_g"+str(i)])
                 createVar["train_step_g"+str(i)] = tf.train.AdamOptimizer(parse.lr).minimize(createVar["cross_entropy_g"+str(i)])
                 output_array.append(createVar["output_g"+str(i)])
